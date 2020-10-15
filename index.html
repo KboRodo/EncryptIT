@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EncryptIt!</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="./encryptors/ceasar.js" defer></script>
+    <script src="./encryptors/vigenere.js" defer></script>
+
+</head>
+<body>
+    <h1>EncryptIt!</h1>
+    <div class="main-box">
+        <div class="input-area">
+            <form >
+                <input type="text" id="input-text" placeholder="Podaj tekst do zaszyfrowania...">
+            </form>
+        </div>
+        <div class="option-menu">
+            <h2>Wybierz sposób szyfrowania</h2>
+            <button class="encrypt-selector" id="ceasar">Szyfr Cezara</button>
+            <button class="encrypt-selector" id="vigenere">Szyfr Vigenère’a</button>
+            <button class="encrypt-selector">Zaszyfruj</button>
+        </div>
+        <div class="output-area">
+            <p id="output-text"></p>
+        </div>
+    </div>
+    
+</body>
+</html>
