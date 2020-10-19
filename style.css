@@ -58,3 +58,11 @@ ul {
     margin-left: 10%;
     margin-right: 10%;
 }
+.mode-selector{
+  min-width: 200px;
+  height: 50px;
+  border: none;
+}
+.mode-selector.active{
+  background-color: #0093E9;
+}
