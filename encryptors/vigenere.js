@@ -39,7 +39,8 @@ function decryptText() {
 function readName() {
     const inputText=document.getElementById('input-text').value;
     const inputArray=inputText.split('')
-    return inputArray}
+    return inputArray
+}
 
 function writeText(outputText) {
     const output=document.getElementById('output-text')
