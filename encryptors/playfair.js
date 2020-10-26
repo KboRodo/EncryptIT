@@ -26,6 +26,7 @@ function encryptText(){//zaszyferowanie tekstu według klucza
     const letterArray=createLetterArray(inputArray)
     const letterLocation=letterLocator(letterArray, keywordArray)
     const encryptedText=encryptPlayfair(letterArray, keywordArray, letterLocation)
+    console.log(encryptedText)
     //writeText(outputText)
 }
 
@@ -46,21 +47,49 @@ function encryptPlayfair(letterArray, keywordArray, letterLocation){//letterarra
     let diffRow
     let diffCol
     let chiperedText=new Array(letterArray.length)
+    let index=0
 
     for(let row=0; row<letterLocation.length; row++){
-        diffRow=letterLocation[row][0][0]-letterLocation[row][1][0]
-        diffCol=letterLocation[row][0][1]-letterLocation[row][1][1]
+        if(letterLocation[row][0][0] && letterLocation[row][1][0]){
 
-        if(diffCol===0){
-            console.log('same column')
-        }
-        else if(diffRow===0){
-            console.log('same row')
+            diffRow=letterLocation[row][0][0]-letterLocation[row][1][0]
+            diffCol=letterLocation[row][0][1]-letterLocation[row][1][1]
+            chiperedText[index]=new Array(2)
+
+            if(diffCol===0){
+                console.log('same column')
+                if(letterLocation[row][0][0]<keywordArray.length && letterLocation[row][1][0]<keywordArray.length){
+                    chiperedText[index][0]=keywordArray[letterLocation[row][0][0]+1][letterLocation[row][0][1]]
+                    chiperedText[index][1]=keywordArray[letterLocation[row][1][0]+1][letterLocation[row][1][1]]
+                }//else wrap to first element of collumn
+                else{
+                    chiperedText[index][0]=keywordArray[letterLocation[row][0][0]+1][letterLocation[row][0][1]]
+                    chiperedText[index][1]=keywordArray[0][letterLocation[row][1][1]]
+                }
+            }
+            else if(diffRow===0){
+                console.log('same row')
+                if(letterLocation[row][0][1]<keywordArray.length && letterLocation[row][1][1]<keywordArray.length){
+                    chiperedText[index][0]=keywordArray[letterLocation[row][0][0]][letterLocation[row][0][1]+1]
+                    chiperedText[index][1]=keywordArray[letterLocation[row][1][0]][letterLocation[row][1][1]+1]
+                }//else wrap to first element of row
+                else{
+                    chiperedText[index][0]=keywordArray[letterLocation[row][0][0]][letterLocation[row][0][1]+1]
+                    chiperedText[index][1]=keywordArray[letterLocation[row][1][0]][0]
+                }
+            }
+            else{
+                console.log('rectangle')
+                chiperedText[index][0]=keywordArray[letterLocation[row][0][0]][letterLocation[row][1][1]]
+                chiperedText[index][1]=keywordArray[letterLocation[row][1][0]][letterLocation[row][0][1]]
+            }
+            index++
         }
         else{
-            console.log('rectangle')
+            console.log('end of loop')
         }
     }
+    return chiperedText
 }
 
 function letterLocator(letterArray, keywordArray){//lokalizuje litery z tabeli letterArray w tabeli keywordArray
@@ -76,9 +105,14 @@ function letterLocator(letterArray, keywordArray){//lokalizuje litery z tabeli l
         }
     }
     //wyszukiewanie lokalizacji liter 
-    for(let row=0; row<keywordArray.length; row++){
-        for(let col=0; col<keywordArray[row].length; col++){
+    console.log('kewyordArray:', keywordArray)
+    const keyRow=keywordArray.length
+    const keyCol=keywordArray[0].length
+    for(let row=0; row<keyRow; row++){
+        for(let col=0; col<keyCol; col++){
+
             if(keywordArray[row][col]===letterArray[letterRow][letterCol]){
+                console.log(keywordArray[row][col],"loc:",row,col)
                 locationArray[letterRow][letterCol]=[row,col]
                 if(letterCol===1){
                     letterCol=0
