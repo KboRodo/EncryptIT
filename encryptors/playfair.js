@@ -55,7 +55,6 @@ function encryptPlayfair(letterArray, keywordArray, letterLocation){//letterarra
             diffRow=letterLocation[row][0][0]-letterLocation[row][1][0]
             diffCol=letterLocation[row][0][1]-letterLocation[row][1][1]
             chiperedText[index]=new Array(2)
-
             if(diffCol===0){
                 console.log('same column')
                 if(letterLocation[row][0][0]<keywordArray.length && letterLocation[row][1][0]<keywordArray.length){
@@ -95,36 +94,30 @@ function encryptPlayfair(letterArray, keywordArray, letterLocation){//letterarra
 function letterLocator(letterArray, keywordArray){//lokalizuje litery z tabeli letterArray w tabeli keywordArray
     let locationArray=new Array(letterArray.length)
 
-    let letterRow=0
-    let letterCol=0
-
     for(let i=0; i<locationArray.length; i++){//tworzenie tableli w ktorej przechowywane sa lokalizacje liter z tabeli keywordArray w tabeli keywordArray
         locationArray[i]=new Array(2)
-        for(let j=0; j<2; j++){
-            locationArray[i][j]=new Array(2)
-        }
     }
     //wyszukiewanie lokalizacji liter 
-    console.log('kewyordArray:', keywordArray)
-    const keyRow=keywordArray.length
-    const keyCol=keywordArray[0].length
-    for(let row=0; row<keyRow; row++){
-        for(let col=0; col<keyCol; col++){
 
-            if(keywordArray[row][col]===letterArray[letterRow][letterCol]){
-                console.log(keywordArray[row][col],"loc:",row,col)
-                locationArray[letterRow][letterCol]=[row,col]
-                if(letterCol===1){
-                    letterCol=0
-                    letterRow++
+    for(let letterRow=0; letterRow<letterArray.length; letterRow++){
+        for(let letterCol=0; letterCol<letterArray[letterRow].length; letterCol++){
+            //przechodzi przez wszystkie elementy tabeli letterArray
+            //works ok
+                for(let row=0; row<keywordArray.length; row++){
+                    for(let col=0; col<keywordArray[row].length; col++){
+                        //przechodzi przez wszystkie elementy tabeli keywordArray
+                        if(keywordArray[row][col]===letterArray[letterRow][letterCol]){
+                            locationArray[letterRow][letterCol]=[row,col]
+                            console.log(keywordArray[row][col],row,col)
+                            break
+                        }
+                    }
                 }
-                else{
-                    letterCol++
-                }
-            }
+
         }
     }
     return locationArray
+    //works ok
 }
 function createLetterArray(inputArray){
     if(inputArray.length%2!=0){//doodanie "z" do konca tekstu wejsciowego jezeli dlugosc jest nieparzysta
