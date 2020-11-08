@@ -27,22 +27,22 @@ function encryptText(){//zaszyferowanie tekstu według klucza
     const letterLocation=letterLocator(letterArray, keywordArray)
     const encryptedText=encryptPlayfair(letterArray, keywordArray, letterLocation)
     console.log(encryptedText)
-    //writeText(outputText)
+    writeText(encryptedText)
 }
+//DZIAŁA OK
 
 function decryptText() {
     const inputArray=readText()//wczytywanie tekstu
     const keyword=createKeyword()//wczytania slowa klucza i usuniecie duplikatu liter
     const keywordArray=createKeywordArray(keyword)
-    
-
     //writeText(outputText)
 }
 //----FUNKCJE OBSŁUGUJACE SZYFROWANIE TEKSTU------
 function encryptPlayfair(letterArray, keywordArray, letterLocation){//letterarray-tablica z inputem, keywordArray-slowo klucz
-    console.log(letterArray)//INPUT
-    console.log(keywordArray)//TABLICA Z ALFABETEM
-    console.log(letterLocation)
+    console.log('encrypt playfair')
+    console.log('input arrray', letterArray)//INPUT
+    console.log('keyword array', keywordArray)//TABLICA Z ALFABETEM
+    console.log('location array', letterLocation)
 
     let diffRow
     let diffCol
@@ -50,7 +50,7 @@ function encryptPlayfair(letterArray, keywordArray, letterLocation){//letterarra
     let index=0
 
     for(let row=0; row<letterLocation.length; row++){
-        if(letterLocation[row][0][0] && letterLocation[row][1][0]){
+            console.log('current element',letterLocation[row][0][0], letterLocation[row][1][0])
 
             diffRow=letterLocation[row][0][0]-letterLocation[row][1][0]
             diffCol=letterLocation[row][0][1]-letterLocation[row][1][1]
@@ -83,10 +83,6 @@ function encryptPlayfair(letterArray, keywordArray, letterLocation){//letterarra
                 chiperedText[index][1]=keywordArray[letterLocation[row][1][0]][letterLocation[row][0][1]]
             }
             index++
-        }
-        else{
-            console.log('end of loop')
-        }
     }
     return chiperedText
 }
@@ -108,7 +104,6 @@ function letterLocator(letterArray, keywordArray){//lokalizuje litery z tabeli l
                         //przechodzi przez wszystkie elementy tabeli keywordArray
                         if(keywordArray[row][col]===letterArray[letterRow][letterCol]){
                             locationArray[letterRow][letterCol]=[row,col]
-                            console.log(keywordArray[row][col],row,col)
                             break
                         }
                     }
@@ -172,8 +167,8 @@ function readText() {
     const inputArray=inputText.split('')//usunac powtorzenia
     return inputArray
 }
-/*
+
 function writeText(outputText) {
     const output=document.getElementById('output-text')
     output.innerHTML=outputText
-}*/
+}
