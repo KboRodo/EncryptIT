@@ -33,11 +33,64 @@ function encryptText(){//zaszyferowanie tekstu według klucza
 
 function decryptText() {
     const inputArray=readText()//wczytywanie tekstu
-    const keyword=createKeyword()//wczytania slowa klucza i usuniecie duplikatu liter
-    const keywordArray=createKeywordArray(keyword)
-    //writeText(outputText)
+    const keyword=createKeyword()//wczytania slowa klucza i usuniecie duplikatu liter //ok
+    const keywordArray=createKeywordArray(keyword)//stworzenie tablicy z tekstem//ok
+    const letterArray=createLetterArray(inputArray)
+    const letterLocation=letterLocator(letterArray, keywordArray)
+    const decryptedText=decryptPlayfair(letterArray, keywordArray, letterLocation)
+    console.log(decryptedText)
+    writeText(decryptedText)
 }
 //----FUNKCJE OBSŁUGUJACE SZYFROWANIE TEKSTU------
+function decryptPlayfair(letterArray, keywordArray, letterLocation){//letterarray-tablica z inputem, keywordArray-slowo klucz
+    console.log('decrypt playfair')
+    console.log('input arrray', letterArray)//INPUT
+    console.log('keyword array', keywordArray)//TABLICA Z ALFABETEM
+    console.log('location array', letterLocation)
+
+    let diffRow
+    let diffCol
+    let chiperedText=new Array(letterArray.length)
+    let index=0
+
+    for(let row=0; row<letterLocation.length; row++){
+            console.log('current element',letterLocation[row][0][0], letterLocation[row][1][0])
+
+            diffRow=letterLocation[row][1][0]-letterLocation[row][0][0]
+            diffCol=letterLocation[row][1][1]-letterLocation[row][0][1]
+            chiperedText[index]=new Array(2)
+            if(diffCol===0){
+                console.log('same column')
+                if(letterLocation[row][0][0]>0 && letterLocation[row][1][0]>0){
+                    chiperedText[index][0]=keywordArray[letterLocation[row][0][0]-1][letterLocation[row][0][1]]
+                    chiperedText[index][1]=keywordArray[letterLocation[row][1][0]-1][letterLocation[row][1][1]]
+                }//else wrap to last element of collumn
+                else{
+                    chiperedText[index][0]=keywordArray[letterLocation[row][0][0]-1][letterLocation[row][0][1]]
+                    chiperedText[index][1]=keywordArray[keywordArray[0].length][letterLocation[row][1][1]]
+                }
+            }
+            else if(diffRow===0){
+                console.log('same row')
+                if(letterLocation[row][0][1]<keywordArray.length && letterLocation[row][1][1]<keywordArray.length){
+                    chiperedText[index][0]=keywordArray[letterLocation[row][0][0]][letterLocation[row][0][1]-1]
+                    chiperedText[index][1]=keywordArray[letterLocation[row][1][0]][letterLocation[row][1][1]-1]
+                }//else wrap to last element of row
+                else{
+                    chiperedText[index][0]=keywordArray[letterLocation[row][0][0]][letterLocation[row][0][1]-1]
+                    chiperedText[index][1]=keywordArray[letterLocation[row][1][0]][keywordArray.length]
+                }
+            }
+            else{
+                console.log('rectangle')
+                chiperedText[index][0]=keywordArray[letterLocation[row][0][0]][letterLocation[row][1][1]]
+                chiperedText[index][1]=keywordArray[letterLocation[row][1][0]][letterLocation[row][0][1]]
+            }
+            index++
+    }
+    return chiperedText
+}
+
 function encryptPlayfair(letterArray, keywordArray, letterLocation){//letterarray-tablica z inputem, keywordArray-slowo klucz
     console.log('encrypt playfair')
     console.log('input arrray', letterArray)//INPUT
@@ -170,5 +223,5 @@ function readText() {
 
 function writeText(outputText) {
     const output=document.getElementById('output-text')
-    output.innerHTML=outputText
-}
+    output.innerHTML=outputText.join('')
+}//usunac wypisywanie przecinków
